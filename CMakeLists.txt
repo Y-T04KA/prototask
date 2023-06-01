@@ -23,8 +23,6 @@ IF(APPLE)
 endif()
 
 if(WIN32)
-    set(CMAKE_C_COMPILER "msvc")
-    set(CMAKE_CXX_COMPILER "msvc")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
