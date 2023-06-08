@@ -3,18 +3,13 @@ project(prototask)
 set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 
-FETCHCONTENT_DECLARE(
-        GTest
-        URL https://github.com/google/googletest/archive/06f44bc951046150f1348598854b211afdcf37fc.zip
-        FIND_PACKAGE_ARGS NAMES GTest
-)
+
 
 FETCHCONTENT_DECLARE(
-        Protobuf
+        protobuf
         GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
         GIT_TAG v23.2
-        SOURCE_SUBDIR cmake
-        FIND_PACKAGE_ARGS NAMES GTest googletest
+        FIND_PACKAGE_ARGS NAMES GTest
 )
 
 IF(APPLE)
@@ -26,6 +21,6 @@ if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-FETCHCONTENT_MAKEAVAILABLE(Protobuf GTest)
+FETCHCONTENT_MAKEAVAILABLE(protobuf)
 
 add_executable(prototask main.cpp)
