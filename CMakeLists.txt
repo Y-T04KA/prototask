@@ -1,16 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
 project(prototask)
 set(CMAKE_CXX_STANDARD 20)
-include(FetchContent)
 
+find_package(protobuf CONFIG REQUIRED)
 
-
-FETCHCONTENT_DECLARE(
-        protobuf
-        GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
-        GIT_TAG v23.2
-        FIND_PACKAGE_ARGS NAMES GTest
-)
 
 IF(APPLE)
 
@@ -21,6 +14,5 @@ if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-FETCHCONTENT_MAKEAVAILABLE(protobuf)
-
-add_executable(prototask main.cpp)
+add_executable(prototask main.cpp protobuf/work.pb.cc protobuf/work.pb.h)
+target_link_libraries(prototask PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
