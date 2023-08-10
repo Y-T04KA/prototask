@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(prototask)
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(protobuf CONFIG REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
 
 
 IF(APPLE)
@@ -15,4 +15,8 @@ if(WIN32)
 endif()
 
 add_executable(prototask main.cpp protobuf/work.pb.cc protobuf/work.pb.h)
+add_executable(write-test write-test.cpp protobuf/work.pb.cc protobuf/work.pb.h)
+add_executable(read-test read-test.cpp protobuf/work.pb.h protobuf/work.pb.cc)
 target_link_libraries(prototask PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+target_link_libraries(write-test PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+target_link_libraries(read-test PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
