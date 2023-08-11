@@ -9,16 +9,19 @@ int main(int argc, char* argv[]) {
     prototask::WrapperMessage wm;
     //auto wm = std::shared_ptr<google::protobuf::Message>(new prototask::WrapperMessage);
     int mode = 1;
-    std::string file;
+    std::string file, datetime;
+    prototask::FastResponse fr;
+    datetime = "31121488";
+    fr.set_current_date_time(datetime);
+    wm.set_allocated_fast_response(&fr);
+    file = "proto1.pb";
     switch (mode) {
         case 1:{
-            prototask::FastResponse fr;
-            fr.set_current_date_time("31121488");
-            wm.set_allocated_fast_response(&fr);
-            wm.clear_slow_response();
-            wm.clear_request_for_fast_response();
-            wm.clear_request_for_slow_response();
-            file = "proto1.pb";
+            //prototask::FastResponse fr;
+            //datetime = "31121488";
+            //fr.set_current_date_time(datetime);
+            //wm.set_allocated_fast_response(&fr);
+            //file = "proto1.pb";
             break;
         };
         case 2:{
