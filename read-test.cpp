@@ -7,6 +7,8 @@ int main(int argc, char* argv[]) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     prototask::WrapperMessage wm;
     std::fstream input("proto_all.pb",std::ios::in | std::ios::binary);
+    int size;
+    input.read(reinterpret_cast<char *>(&size), sizeof(int));
     if (!wm.ParseFromIstream(&input)){
         std::cerr<<"fail to read\n";
         return -1;
