@@ -2,7 +2,6 @@
 #define PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
 #include <iostream>
 #include <list>
-//#include "protobuf/work.pb.h"
 #include "parseDelimited.cpp"
 
 template<typename MessageType>
