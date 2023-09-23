@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.24)
 project(prototask)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -16,8 +16,9 @@ endif()
 
 if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
 endif()
 
 
-add_executable(prototask main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.cpp DelimetedMessagesStreamParser.h serialize.cpp parseDelimited.cpp)
+add_executable(prototask main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.cpp DelimetedMessagesStreamParser.h serialize.cpp)
 target_link_libraries(prototask ${Protobuf_LIBRARIES})

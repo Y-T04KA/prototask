@@ -2,7 +2,7 @@
 #define PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
 #include <iostream>
 #include <list>
-#include "parseDelimited.cpp"
+#include "work.pb.h"
 
 template<typename MessageType>
 class DelimetedMessagesStreamParser {
@@ -28,10 +28,16 @@ public://уровень пониже -- строим кэш и отдаем ег
 
 private:
     std::list<PointerToConstValue> retval;
+    size_t parseSizeFromBuffer(std::vector<char>);
+    std::shared_ptr<MessageType> parseDelimeted(std::vector<char>& data, size_t size, size_t* bytesConsumed = 0);
     std::vector<char> m_buffer;
     size_t messageSize = 0;
     size_t* bytes_consumed = nullptr;
+
+    std::shared_ptr<MessageType> parseDelimeted(const std::vector<char> &data, size_t size, size_t *bytesConsumed);
 };
+
+
 
 
 #endif //PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
