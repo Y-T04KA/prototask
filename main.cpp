@@ -1,7 +1,7 @@
-#include <string>
-#include <fstream>
-#include "serialize.cpp"
+//#include <string>
+//#include <fstream>
 #include "DelimetedMessagesStreamParser.h"
+//#include "serialize.cpp"
 
 prototask::WrapperMessage makeMessage(int mode){//изначально эта фукция была в serialize.cpp, но там линкер начал
     prototask::WrapperMessage wm; //бухтеть, мол я функцию определяю и там и тут, а теперь тут она почему-то определяется

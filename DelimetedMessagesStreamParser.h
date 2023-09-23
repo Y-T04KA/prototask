@@ -1,6 +1,5 @@
 #ifndef PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
 #define PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
-#include <iostream>
 #include <list>
 #include "parseDelimited.cpp"
 
@@ -31,7 +30,15 @@ private:
     std::vector<char> m_buffer;
     size_t messageSize = 0;
     size_t* bytes_consumed = nullptr;
+    size_t parseSizeFromBuffer(std::vector<char> input){
+        google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
+        google::protobuf::io::CodedInputStream coded_input(&array_input);
+        uint32_t size;
+        coded_input.ReadVarint32(&size);
+        return size;
+    }
 };
+
 
 
 #endif //PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H

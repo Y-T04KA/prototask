@@ -19,5 +19,5 @@ if(WIN32)
 endif()
 
 
-add_executable(prototask main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.cpp DelimetedMessagesStreamParser.h serialize.cpp parseDelimited.cpp)
+add_executable(prototask main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.h serialize.cpp parseDelimited.cpp)
 target_link_libraries(prototask ${Protobuf_LIBRARIES})

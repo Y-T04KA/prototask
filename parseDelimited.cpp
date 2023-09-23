@@ -1,5 +1,4 @@
-#include <iostream>
-#include "work.pb.h"
+#include "serialize.cpp"
 /*!
        * \brief Расшифровывает сообщение, предваренное длиной из массива байтов.
        *
@@ -13,8 +12,8 @@
        */
 //уровень низкий вообще жесть -- получаем байты, отдаем сообщение
 template<typename Message>
-//std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = 0){ оригинальная строчка
 std::shared_ptr<Message> parseDelimeted(const std::vector<char> data, size_t size, size_t* bytesConsumed = 0){
+//std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = 0){ оригинальная строчка
     Message msg;
     google::protobuf::io::ArrayInputStream array_input(&data[0], data.size());
     google::protobuf::io::CodedInputStream coded_input(&array_input);
@@ -26,10 +25,3 @@ std::shared_ptr<Message> parseDelimeted(const std::vector<char> data, size_t siz
     return std::shared_ptr<Message>(new Message{msg});
 }
 
-size_t parseSizeFromBuffer(std::vector<char> input){
-    google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
-    google::protobuf::io::CodedInputStream coded_input(&array_input);
-    uint32_t size;
-    coded_input.ReadVarint32(&size);
-    return size;
-}
