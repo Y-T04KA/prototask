@@ -14,7 +14,7 @@ public://уровень пониже -- строим кэш и отдаем ег
         } else if (messageSize==0 and m_buffer.size()>3) {//достаточно байт чтобы прочитать размер
             m_buffer.push_back(*data.c_str());
             messageSize = parseSizeFromBuffer(m_buffer);
-        } else if (messageSize+1==m_buffer.size()){//+1 чтобы не стукнуться об конец вектора
+        } else if (messageSize==m_buffer.size()){//+1 чтобы не стукнуться об конец вектора
             m_buffer.push_back(*data.c_str());
             auto res = parseDelimeted<MessageType>(m_buffer,messageSize,bytes_consumed);
             retval.push_back(res);
