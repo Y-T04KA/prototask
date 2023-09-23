@@ -23,14 +23,13 @@ std::shared_ptr<Message> parseDelimeted(const std::vector<char> data, size_t siz
     google::protobuf::io::CodedInputStream::Limit lim = coded_input.PushLimit(sizeInternal);
     msg.ParseFromCodedStream(&coded_input);
     coded_input.PopLimit(lim);
-    //auto retval = std::make_shared<Message>(msg);
-    return std::shared_ptr<Message>(static_cast<const std::shared_ptr<prototask::WrapperMessage>>(msg));
+    return std::shared_ptr<Message>(new Message{msg});
 }
 
-//size_t parseSize(std::vector<char> input){
-//    google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
-//    google::protobuf::io::CodedInputStream coded_input(&array_input);
-//    uint32_t size;
-//    coded_input.ReadVarint32(&size);
-//    return size;
-//}
+size_t parseSizeFromBuffer(std::vector<char> input){
+    google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
+    google::protobuf::io::CodedInputStream coded_input(&array_input);
+    uint32_t size;
+    coded_input.ReadVarint32(&size);
+    return size;
+}
