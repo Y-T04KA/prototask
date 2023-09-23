@@ -3,29 +3,23 @@
 #include "serialize.cpp"
 #include "DelimetedMessagesStreamParser.h"
 
-size_t testSize = 0;
-
 prototask::WrapperMessage makeMessage(int mode){//изначально эта фукция была в serialize.cpp, но там линкер начал
     prototask::WrapperMessage wm; //бухтеть, мол я функцию определяю и там и тут, а теперь тут она почему-то определяется
     switch (mode) {//без инклуда. Или он подтягивается из сериалайза?
         case 1:{
             wm.mutable_fast_response()->set_current_date_time("19851019T333");
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         case 2:{
             wm.mutable_slow_response()->set_connected_client_count(69);
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         case 3:{
             wm.mutable_request_for_fast_response()->New();
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         case 4:{
             wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(420);
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         case 5:{
@@ -33,7 +27,6 @@ prototask::WrapperMessage makeMessage(int mode){//изначально эта ф
             wm.mutable_slow_response()->set_connected_client_count(4234567890);
             wm.mutable_request_for_fast_response()->New();
             wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         case 6:{
@@ -41,7 +34,6 @@ prototask::WrapperMessage makeMessage(int mode){//изначально эта ф
             wm.mutable_slow_response()->set_connected_client_count(4234567890);
             wm.mutable_request_for_fast_response()->New();
             wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
-            testSize = wm.ByteSizeLong();
             return wm;
         }
         default:
@@ -54,7 +46,15 @@ prototask::WrapperMessage makeMessage(int mode){//изначально эта ф
 
 void DebugAwfulness(std::vector<char> messages){
     prototask::WrapperMessage wm;
-    google::protobuf::io::ArrayInputStream array_input(&messages[0], messages.size());
+    std::string exper;
+    std::vector<char> why;
+    for (const char byte : messages){
+        exper.push_back(byte);
+        why.push_back(*std::string(1,byte).c_str());
+    }
+    std::cout<<exper[0]<<'\n';
+    //google::protobuf::io::ArrayInputStream array_input(&exper[0],exper.size());
+    google::protobuf::io::ArrayInputStream array_input(&why[0], why.size());
     google::protobuf::io::CodedInputStream coded_input(&array_input);
     uint32_t size;
     coded_input.ReadVarint32(&size);
@@ -69,18 +69,19 @@ int main(int argc, char* argv[]) {
     auto eh = makeMessage(6);
     auto temp = serializeDelimited<prototask::WrapperMessage>(eh);
     messages.insert(messages.end(),temp->begin(),temp->end());
-    DebugAwfulness(messages);
+    //DebugAwfulness(messages);
     typedef DelimetedMessagesStreamParser<prototask::WrapperMessage> Parser;
     Parser parser;
 
     // идем по одному байту по входному потоку сообщений
     for(const char byte : messages)
     {
-        auto test = std::string(1,byte);
-        int l = byte;
-        std::cout<<l;
-        //const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte)); //тут создается строка из одного byte, НО ЗАЧЕМ????
-        //const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(byte);//пока попробую байт напрямую
+//        auto oof = std::string(1,byte);
+//        int i = byte;
+//        std::cout<<oof<<' '<<byte<<std::endl;
+        const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte)); //тут создается строка из одного byte, НО ЗАЧЕМ????
+        //верхний уровень -- отдаем байты, складируем сообщения
+        //const std::list<Parser::PointerToConstValue> parsedMessages = parser.parse(byte);//пока попробую байт напрямую
         //for(const Parser::PointerToConstValue& value : parsedMessages){
                 // добавляем куда-то все сообщения, НО КУДА????
                 //пусть пока будут в терминал печататься, не знаю

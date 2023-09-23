@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.26)
 project(prototask)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Protobuf CONFIG REQUIRED)
+
+include_directories(${Protobuf_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB PROTO_FILES *.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 
 IF(APPLE)
 
@@ -13,9 +18,6 @@ if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-add_executable(prototask main.cpp protobuf/work.pb.cc protobuf/work.pb.h DelimetedMessagesStreamParser.cpp DelimetedMessagesStreamParser.h serialize.cpp parseDelimited.cpp)
-add_executable(write-test write-test.cpp protobuf/work.pb.cc protobuf/work.pb.h)
-add_executable(read-test read-test.cpp protobuf/work.pb.h protobuf/work.pb.cc)
-target_link_libraries(prototask PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
-target_link_libraries(write-test PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
-target_link_libraries(read-test PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+
+add_executable(prototask main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.cpp DelimetedMessagesStreamParser.h serialize.cpp parseDelimited.cpp)
+target_link_libraries(prototask ${Protobuf_LIBRARIES})

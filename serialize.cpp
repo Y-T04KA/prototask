@@ -1,5 +1,5 @@
 #include <iostream>
-#include "protobuf/work.pb.h"
+#include "work.pb.h"
 #if GOOGLE_PROTOBUF_VERSION >= 3012004
 #define PROTOBUF_MESSAGE_BYTE_SIZE(message) ((message).ByteSizeLong())
 #else
