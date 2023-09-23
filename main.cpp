@@ -86,13 +86,13 @@ int main(int argc, char* argv[]) {
                  //добавляем куда-то все сообщения, НО КУДА????
                 //пусть пока будут в терминал печататься, не знаю
                 if (value->has_fast_response()){
-                    std::cout<<"Have fast response: ", value->mutable_fast_response()->current_date_time(),"\n";
+                    std::cout<<"Have fast response: "<< value->mutable_fast_response()->current_date_time()<<"\n";
                 } else if (value->has_slow_response()){
-                    std::cout<<"Have slow response: ", value->mutable_slow_response()->connected_client_count(),'\n';
+                    std::cout<<"Have slow response: "<< value->mutable_slow_response()->connected_client_count()<<'\n';
                 } else if (value->has_request_for_fast_response()){
                     std::cout<<"Have fast request\n";
                 } else if (value->has_request_for_slow_response()){
-                    std::cout<<"Have slow request: ", value->mutable_request_for_slow_response()->time_in_seconds_to_sleep(),'\n';
+                    std::cout<<"Have slow request: "<< value->mutable_request_for_slow_response()->time_in_seconds_to_sleep()<<'\n';
                 };
         }
 
