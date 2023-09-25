@@ -14,7 +14,7 @@ public://уровень пониже -- строим кэш и отдаем ег
             messageSize = parseSizeFromBuffer(m_buffer);
         }
         if (messageSize>0 and messageSize==m_buffer.size()-1){
-            auto res = parseDelimeted<MessageType>(m_buffer,messageSize,&bytes_consumed);
+            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),m_buffer.size(),&bytes_consumed);
             retval.push_back(res);
             messageSize = 0;
             for (int i=0;i!=bytes_consumed;i++){

@@ -6,15 +6,15 @@ prototask::WrapperMessage makeMessage(int mode){
         case 1:{
             wm.mutable_fast_response()->set_current_date_time("19851019T333");
             return wm;
-        }//ok
+        }
         case 2:{
             wm.mutable_slow_response()->set_connected_client_count(69);
             return wm;
-        }//ok
+        }
         case 3:{
             wm.mutable_request_for_fast_response()->New();
             return wm;
-        }//ok
+        }
         case 4:{
             wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(420);
             return wm;
@@ -63,7 +63,7 @@ void DebugAwfulness(std::vector<char> messages){
 int main(int argc, char* argv[]) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     std::vector<char> messages;
-    auto eh = makeMessage(2);
+    auto eh = makeMessage(6);
     auto temp = serializeDelimited<prototask::WrapperMessage>(eh);
     messages.insert(messages.end(),temp->begin(),temp->end());
     //DebugAwfulness(messages);
