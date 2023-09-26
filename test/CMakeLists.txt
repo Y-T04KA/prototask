@@ -1,0 +1,2 @@
+add_executable(prototest Test_DelimetedMessagesStreamParser.cpp)
+

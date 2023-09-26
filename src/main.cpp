@@ -1,4 +1,4 @@
-#include "serialize.cpp"
+#include "DelimetedMessagesStreamParser.hpp"
 
 prototask::WrapperMessage makeMessage(int mode){
     prototask::WrapperMessage wm;
