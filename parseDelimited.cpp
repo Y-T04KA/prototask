@@ -1,4 +1,6 @@
-#include "serialize.cpp"
+//#include "serialize.cpp"
+#include <iostream>
+#include "work.pb.h"
 /*!
        * \brief Расшифровывает сообщение, предваренное длиной из массива байтов.
        *
