@@ -1,9 +1,15 @@
 {
-  "name" : "prototask",
+  "name" : "protobuf-parser",
   "version-string" : "1.0.0",
-  "builtin-baseline" : "b7dba7f9aad09a56900f21cd78cfda1258e54e38",
+  "builtin-baseline" : "70fd7df7a9e2d3d47ab6bf87fc7347a6c2d06fda",
   "dependencies" : [ {
     "name" : "protobuf",
     "version>=" : "3.21.12"
-  }]
+  }, {
+    "name" : "vcpkg-cmake-config",
+    "version>=" : "2022-02-06#1"
+  }, {
+    "name" : "vcpkg-cmake",
+    "version>=" : "2023-05-04"
+  } ]
 }
