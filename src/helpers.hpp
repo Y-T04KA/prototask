@@ -51,3 +51,45 @@ std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* b
 
 }
 
+prototask::WrapperMessage makeMessage(int mode){
+    prototask::WrapperMessage wm;
+    switch (mode) {
+        case 1:{
+            wm.mutable_fast_response()->set_current_date_time("19851019T333");
+            return wm;
+        }
+        case 2:{
+            wm.mutable_slow_response()->set_connected_client_count(69);
+            return wm;
+        }
+        case 3:{
+            wm.mutable_request_for_fast_response()->New();
+            return wm;
+        }
+        case 4:{
+            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(420);
+            return wm;
+        }
+        case 5:{
+            wm.mutable_fast_response()->set_current_date_time("SOME VERY LONG STRING JUST TO TEST THE LIMITS OF THIS THING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfkdjfdsfjdsjfiopwejfewjfewoifjewofjewofijAAAAAAAAAAAAAAA");
+            wm.mutable_slow_response()->set_connected_client_count(4234567890);
+            wm.mutable_request_for_fast_response()->New();
+            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
+            return wm;
+        }
+        case 6:{
+            wm.mutable_fast_response()->set_current_date_time("ANOTHER SLiGHTY SHORTER MESSAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfkdjfdsfjdsjfiopwejfewjfewoifjewofjewofijAAAAAAAAAAAAAAA");
+            wm.mutable_slow_response()->set_connected_client_count(4234567890);
+            wm.mutable_request_for_fast_response()->New();
+            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
+            return wm;
+        }
+        default:
+        {
+            wm.mutable_fast_response()->set_current_date_time("YYYYMMDDThhmmss.fff");//я дебил и заполнял сообщение все это время неправильно. Штош
+            return wm;
+        }
+    }
+}
+
+

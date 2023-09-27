@@ -1,46 +1,5 @@
 #include "DelimetedMessagesStreamParser.hpp"
 
-prototask::WrapperMessage makeMessage(int mode){
-    prototask::WrapperMessage wm;
-    switch (mode) {
-        case 1:{
-            wm.mutable_fast_response()->set_current_date_time("19851019T333");
-            return wm;
-        }
-        case 2:{
-            wm.mutable_slow_response()->set_connected_client_count(69);
-            return wm;
-        }
-        case 3:{
-            wm.mutable_request_for_fast_response()->New();
-            return wm;
-        }
-        case 4:{
-            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(420);
-            return wm;
-        }
-        case 5:{
-            wm.mutable_fast_response()->set_current_date_time("SOME VERY LONG STRING JUST TO TEST THE LIMITS OF THIS THING AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfkdjfdsfjdsjfiopwejfewjfewoifjewofjewofijAAAAAAAAAAAAAAA");
-            wm.mutable_slow_response()->set_connected_client_count(4234567890);
-            wm.mutable_request_for_fast_response()->New();
-            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
-            return wm;
-        }
-        case 6:{
-            wm.mutable_fast_response()->set_current_date_time("ANOTHER SLiGHTY SHORTER MESSAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfkdjfdsfjdsjfiopwejfewjfewoifjewofjewofijAAAAAAAAAAAAAAA");
-            wm.mutable_slow_response()->set_connected_client_count(4234567890);
-            wm.mutable_request_for_fast_response()->New();
-            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(3876543210);
-            return wm;
-        }
-        default:
-        {
-            wm.mutable_fast_response()->set_current_date_time("YYYYMMDDThhmmss.fff");//я дебил и заполнял сообщение все это время неправильно. Штош
-            return wm;
-        }
-    }
-}
-
 void DebugAwfulness(const std::vector<char>& messages){
     prototask::WrapperMessage wm;
     std::string exper;
@@ -69,6 +28,8 @@ int main(int argc, char* argv[]) {
     //DebugAwfulness(messages);
     typedef DelimetedMessagesStreamParser<prototask::WrapperMessage> Parser;
     Parser parser;
+
+    if (eh.has_request_for_slow_response()) int c = 1; else int c = 2;
 
     // идем по одному байту по входному потоку сообщений
     for(const char byte : messages)
