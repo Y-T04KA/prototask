@@ -41,7 +41,7 @@ prototask::WrapperMessage makeMessage(int mode){
     }
 }
 
-void DebugAwfulness(std::vector<char> messages){
+void DebugAwfulness(const std::vector<char>& messages){
     prototask::WrapperMessage wm;
     std::string exper;
     std::vector<char> why;

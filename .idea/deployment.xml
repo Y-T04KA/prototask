@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="Remote Development" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="Remote GCC (de9e05b1-c889-4def-8fb3-c0547b4c89a8)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.jsIw7O4ckl" local="$PROJECT_DIR$" />
+            <mapping deploy="/prototask" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />

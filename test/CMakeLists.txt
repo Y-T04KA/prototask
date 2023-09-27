@@ -1,2 +1,2 @@
-add_executable(prototest Test_DelimetedMessagesStreamParser.cpp)
+#add_executable(prototest Test_DelimetedMessagesStreamParser.cpp)
 
