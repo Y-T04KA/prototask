@@ -45,7 +45,7 @@ std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* b
     coded_input.ReadVarint32(&sizeInternal);
     //google::protobuf::io::CodedInputStream::Limit lim = coded_input.PushLimit(sizeInternal);
     msg.ParseFromCodedStream(&coded_input);//изначально я хотел чтобы bytesConsumed писался только в случае успешного парса
-    *bytesConsumed = sizeInternal++;//но фукнция почему-то умеет возвращать только фолс
+    *bytesConsumed = ++sizeInternal;//но фукнция почему-то умеет возвращать только фолс
     //coded_input.PopLimit(lim); //лимиты нам тут не нужны ибо класс гарантирует что байты будут ровно на одно сообщение
     return std::shared_ptr<Message>(new Message{msg});
 

@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 
 
-enable_testing()#must be in root .txt
+#enable_testing()#must be in root .txt
+include(CTest)
 add_subdirectory(src)
 #include_directories(src) - another way for dirs without CMakeLists.txt, was in template, but generally unrecommended to use
 add_subdirectory(test)
