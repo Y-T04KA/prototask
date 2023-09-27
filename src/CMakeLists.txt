@@ -3,15 +3,10 @@
 #set(CMAKE_CXX_STANDARD 20)
 
 find_package(Protobuf CONFIG REQUIRED)
-
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 file(GLOB PROTO_FILES *.proto)#GLOB is also unrecommended, but i guess it's okay in this case
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
-
-if(WIN32)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif()
 
 add_executable(protobuf_parser main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.hpp helpers.hpp)
 IF(NOT WIN32)#так написано делать в доках CMake, но под MSVC не соберется

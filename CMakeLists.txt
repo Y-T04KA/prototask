@@ -5,6 +5,9 @@ project(protobuf_parser
         DESCRIPTION "Разбор потока length-prefiex Protobuf сообщений на С++"
         LANGUAGES CXX)#i saw it's good to define lang here
 set(CMAKE_CXX_STANDARD 20)
+
+
+
 enable_testing()#must be in root .txt
 add_subdirectory(src)
 #include_directories(src) - another way for dirs without CMakeLists.txt, was in template, but generally unrecommended to use

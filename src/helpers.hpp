@@ -51,15 +51,15 @@ std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* b
 
 }
 
-prototask::WrapperMessage makeMessage(int mode){
+prototask::WrapperMessage makeMessage(int mode, std::string payload){
     prototask::WrapperMessage wm;
     switch (mode) {
         case 1:{
-            wm.mutable_fast_response()->set_current_date_time("19851019T333");
+            wm.mutable_fast_response()->set_current_date_time(payload);
             return wm;
         }
         case 2:{
-            wm.mutable_slow_response()->set_connected_client_count(69);
+            wm.mutable_slow_response()->set_connected_client_count(std::stoi(payload));
             return wm;
         }
         case 3:{
@@ -67,7 +67,7 @@ prototask::WrapperMessage makeMessage(int mode){
             return wm;
         }
         case 4:{
-            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(420);
+            wm.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(std::stoi(payload));
             return wm;
         }
         case 5:{
