@@ -1,7 +1,7 @@
 #ifndef PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
 #define PROTOTASK_DELIMETEDMESSAGESSTREAMPARSER_H
 #include <list>
-#include "parseDelimited.cpp"
+#include "helpers.hpp"
 
 template<typename MessageType>
 class DelimetedMessagesStreamParser {
