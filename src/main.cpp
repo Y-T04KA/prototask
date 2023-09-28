@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     for(const char byte : messages)
     {
         std::cout<<"for iteration\n";
-        const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte)); //тут создается строка из одного byte, НО ЗАЧЕМ????
+        const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte));
         //верхний уровень -- отдаем байты, складируем сообщения
         for(const Parser::PointerToConstValue& value : parsedMessages){
                  //добавляем куда-то все сообщения, НО КУДА????

@@ -35,7 +35,7 @@ PointerToConstData serializeDelimited(const Message& msg)
        *
        * \return Умный указатель на сообщение. Если удалось расшифровать сообщение, то он не пустой.
        */
-//уровень низкий вообще жесть -- получаем байты, отдаем сообщение
+//получаем байты, отдаем сообщение
 template<typename Message>
 std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = nullptr){
     Message msg;

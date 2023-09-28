@@ -1,11 +1,7 @@
-#cmake_minimum_required(VERSION 3.15)
-#project(protobuf_parser) in subdir can be removed, but if not will work anyway
-#set(CMAKE_CXX_STANDARD 20)
-
 find_package(Protobuf CONFIG REQUIRED)
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-file(GLOB PROTO_FILES *.proto)#GLOB is also unrecommended, but i guess it's okay in this case
+file(GLOB PROTO_FILES *.proto)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 
 add_executable(protobuf_parser main.cpp ${PROTO_SRCS} ${PROTO_HDRS} DelimetedMessagesStreamParser.hpp helpers.hpp)

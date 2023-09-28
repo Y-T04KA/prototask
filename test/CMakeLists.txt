@@ -1,7 +1,7 @@
 project(gtests)
 include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_BINARY_DIR}/src)#так, наверное, очень плохо, но я пока не придумал другого пути чтобы делать протобаф сообщения в
-#include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${CMAKE_BINARY_DIR}/src)
+
 
 find_package(GTest CONFIG REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
