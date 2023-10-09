@@ -9,8 +9,8 @@ public://уровень пониже -- строим кэш и отдаем ег
     typedef std::shared_ptr<MessageType> PointerToConstValue;
     std::list<PointerToConstValue> parse(const std::string& data){
         //пока будет внутри хедера, потому что иначе передача PointerToConstValue становится ужасом
-        m_buffer.push_back(*data.c_str());
-        if (messageSize==0 and m_buffer.size()==2){
+        for (auto sym : data) m_buffer.push_back(sym);//now it goes through all symblols in string
+        if (messageSize==0 and m_buffer.size()>=2){
             messageSize = parseSizeFromBuffer(m_buffer);
         }
         if (messageSize>0 and messageSize==m_buffer.size()-1){

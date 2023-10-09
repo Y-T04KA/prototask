@@ -73,7 +73,6 @@ TEST(DmspTest, SingleSlowRequest) {
     }
 }
 
-
 TEST(DmspTest, DoubleFastResponse) {
     std::vector<char> messages;
     std::string reference = "20230926T192839.111";
