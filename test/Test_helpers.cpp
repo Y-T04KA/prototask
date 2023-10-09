@@ -1,7 +1,7 @@
 #include "helpers.hpp"
 #include "gtest/gtest.h"
 
-
+typedef prototask::WrapperMessage wm;
 class parseDelimitedTest : public ::testing::Test{};
 
 TEST(parseDelimitedTest, SingleFastResponse) {
@@ -66,8 +66,6 @@ TEST(parseDelimitedTest, SingleSlowRequest) {
 
 class ProvidedParseDelimited : public ::testing::Test{};
 
-typedef prototask::WrapperMessage wm;
-
 TEST(ProvidedParseDelimited,DefaultTest){
     std::shared_ptr<wm> delim;
     prototask::WrapperMessage message;
@@ -112,7 +110,7 @@ TEST(ProvidedParseDelimited,CorruptedDataTest){
     auto buffer = serializeDelimited(message);
     size_t bytesConsumed = 0;
     std::string corrupted = std::string(buffer->begin(), buffer->end());
-    corrupted[0] -= 1;
+    corrupted[0] -= 3;
     EXPECT_THROW(
             parseDelimeted<wm>(corrupted.data(),corrupted.size(),&bytesConsumed),
             std::runtime_error
