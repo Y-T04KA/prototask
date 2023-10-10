@@ -8,18 +8,11 @@ class DelimetedMessagesStreamParser {
 public://уровень пониже -- строим кэш и отдаем его на парсинг, получаем одно сообщение, отдаем его наверх
     typedef std::shared_ptr<MessageType> PointerToConstValue;
     std::list<PointerToConstValue> parse(const std::string& data){
-        //пока будет внутри хедера, потому что иначе передача PointerToConstValue становится ужасом
         for (auto sym : data) m_buffer.push_back(sym);//now it goes through all symblols in string
-        if (messageSize==0 and m_buffer.size()>=2){
-            messageSize = parseSizeFromBuffer(m_buffer);
-        }
-        if (messageSize>0 and messageSize==m_buffer.size()-1){
-            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),m_buffer.size(),&bytes_consumed);
+        while (isBigEnough()){
+            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),messageSize+1,&bytes_consumed);
             retval.push_back(res);
-            messageSize = 0;
-            for (int i=0;i!=bytes_consumed;i++){
-                m_buffer.erase(m_buffer.begin());
-            }
+            prepareForNextMessage();
         }
         return retval;
     };
@@ -35,6 +28,17 @@ private:
         uint32_t size;
         coded_input.ReadVarint32(&size);
         return size;
+    }
+    bool isBigEnough(){
+        if (m_buffer.size()>=2) {
+            if (messageSize == 0) messageSize = parseSizeFromBuffer(m_buffer);
+            return messageSize + 1 <= m_buffer.size();
+        } else return false;
+    }
+    void prepareForNextMessage(){
+        for (int i=0;i!=bytes_consumed;i++) m_buffer.erase(m_buffer.begin());
+        messageSize = 0;
+        bytes_consumed=0;
     }
 };
 
