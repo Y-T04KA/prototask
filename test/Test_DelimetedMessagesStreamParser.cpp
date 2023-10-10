@@ -5,6 +5,23 @@ class DmspTest : public ::testing::Test{};
 
 typedef DelimetedMessagesStreamParser<prototask::WrapperMessage> Parser;
 
+TEST(DmspTest, SingleFastRequest) {
+    std::string reference = "28";
+    auto sample = makeMessage(3, reference);
+    auto pointers = serializeDelimited<prototask::WrapperMessage>(sample);
+    std::vector<char> messages;
+    messages.insert(messages.end(),pointers->begin(),pointers->end());
+    Parser parser;
+    for(const char byte : messages) {
+        const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte));
+        for(const Parser::PointerToConstValue& value : parsedMessages){
+            if (!value->has_fast_response() and !value->has_slow_response() and !value->has_request_for_slow_response() and value->has_request_for_fast_response()){
+                ASSERT_TRUE(value->has_request_for_fast_response());
+            }
+        }
+    }
+}
+
 TEST(DmspTest, SingleFastResponse) {
     std::string reference = "20230926T192839.111";
     auto sample = makeMessage(1, reference);
@@ -34,23 +51,6 @@ TEST(DmspTest, SingleSlowResponse) {
         for(const Parser::PointerToConstValue& value : parsedMessages){
             if (!value->has_fast_response() and value->has_slow_response() and !value->has_request_for_slow_response() and !value->has_request_for_fast_response()){
                 ASSERT_EQ(std::stoi(reference),value->mutable_slow_response()->connected_client_count());
-            }
-        }
-    }
-}
-
-TEST(DmspTest, SingleFastRequest) {
-    std::string reference = "28";
-    auto sample = makeMessage(3, reference);
-    auto pointers = serializeDelimited<prototask::WrapperMessage>(sample);
-    std::vector<char> messages;
-    messages.insert(messages.end(),pointers->begin(),pointers->end());
-    Parser parser;
-    for(const char byte : messages) {
-        const std::list<Parser::PointerToConstValue>& parsedMessages = parser.parse(std::string(1, byte));
-        for(const Parser::PointerToConstValue& value : parsedMessages){
-            if (!value->has_fast_response() and !value->has_slow_response() and !value->has_request_for_slow_response() and value->has_request_for_fast_response()){
-                ASSERT_TRUE(value->has_request_for_fast_response());
             }
         }
     }
@@ -231,7 +231,7 @@ TEST(ProvidedParserTest, SomeFastRequests){
     std::list<Parser::PointerToConstValue> messages;
     Parser parser;
     prototask::WrapperMessage message;
-    message.mutable_request_for_fast_response();
+    message.mutable_request_for_fast_response()->New();
     auto data = serializeDelimited(message);
     size_t count = 5;
     std::string stream;
@@ -259,7 +259,7 @@ TEST(ProvidedParserTest, SomeSlowRequests){
     std::list<Parser::PointerToConstValue> messages;
     Parser parser;
     prototask::WrapperMessage message;
-    message.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(0);
+    message.mutable_request_for_slow_response()->set_time_in_seconds_to_sleep(69);
     auto data = serializeDelimited(message);
     size_t count = 5;
     std::string stream;
@@ -267,7 +267,7 @@ TEST(ProvidedParserTest, SomeSlowRequests){
     messages = parser.parse(stream);
     ASSERT_EQ(count,messages.size());
     for(auto &item : messages) {
-        ASSERT_TRUE(item->has_request_for_fast_response());
+        ASSERT_TRUE(item->has_request_for_slow_response());
         EXPECT_EQ(item->request_for_slow_response().time_in_seconds_to_sleep(),
                   message.request_for_slow_response().time_in_seconds_to_sleep());
     }
