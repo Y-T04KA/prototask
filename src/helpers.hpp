@@ -35,20 +35,32 @@ PointerToConstData serializeDelimited(const Message& msg)
        *
        * \return Умный указатель на сообщение. Если удалось расшифровать сообщение, то он не пустой.
        */
-//получаем байты, отдаем сообщение
 template<typename Message>
 std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = nullptr){
+    if (data == nullptr) return nullptr;
+    auto payload = static_cast<const char*>(data);
+    if (payload=="") return nullptr;
     Message msg;
-    google::protobuf::io::ArrayInputStream array_input(static_cast<const char*>(data), size);
+    google::protobuf::io::ArrayInputStream array_input(payload, size);
     google::protobuf::io::CodedInputStream coded_input(&array_input);
-    uint32_t sizeInternal;//второй раз считать размер незачем, но проще посчитать размер дважды, чем высчитывать сколько отрезать от буфера чтобы не сломать сообщение целиком
+    uint32_t sizeInternal;//проще посчитать размер дважды, чем высчитывать сколько отрезать от буфера чтобы не сломать сообщение целиком
     coded_input.ReadVarint32(&sizeInternal);
-    //google::protobuf::io::CodedInputStream::Limit lim = coded_input.PushLimit(sizeInternal);
-    msg.ParseFromCodedStream(&coded_input);//изначально я хотел чтобы bytesConsumed писался только в случае успешного парса
-    *bytesConsumed = ++sizeInternal;//но фукнция почему-то умеет возвращать только фолс
-    //coded_input.PopLimit(lim); //лимиты нам тут не нужны ибо класс гарантирует что байты будут ровно на одно сообщение
+    if (coded_input.ExpectTag(0)){
+        throw std::runtime_error("Failed to ReadVarint32");
+        //return nullptr; в MR просили вернуть nullptr, однако в таком случае ломается тест на
+    }//закоррапченный varint, ибо там ждут runtime error а не nullptr
+    google::protobuf::io::CodedInputStream::Limit lim = coded_input.PushLimit(sizeInternal);
+    if (!msg.ParseFromCodedStream(&coded_input)){
+        throw std::runtime_error("Wrong Data passed to parseDelimited()");
+    };
+    if (!coded_input.ConsumedEntireMessage() and std::string(payload).size()+1==size){
+        throw std::runtime_error("Buffer wasn't entirely consumed, which is a bad sign");
+    } else if (sizeInternal>size) return nullptr;
+    if (bytesConsumed!= nullptr){
+        *bytesConsumed = ++sizeInternal;
+    }
+    //coded_input.PopLimit(lim); //лимит не двигаем так как читаем ровно одно сообщение
     return std::shared_ptr<Message>(new Message{msg});
-
 }
 
 prototask::WrapperMessage makeMessage(int mode, std::string payload){
