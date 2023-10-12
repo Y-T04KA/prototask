@@ -10,7 +10,7 @@ public://уровень пониже -- строим кэш и отдаем ег
     std::list<PointerToConstValue> parse(const std::string& data){
         for (auto sym : data) m_buffer.push_back(sym);//now it goes through all symblols in string
         while (isBigEnough()){
-            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),messageSize+1,&bytes_consumed);
+            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),m_buffer.size(),&bytes_consumed);
             retval.push_back(res);
             prepareForNextMessage();
         }
