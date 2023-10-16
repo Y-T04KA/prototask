@@ -11,7 +11,7 @@ if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-add_executable(testDMSP Test_DelimetedMessagesStreamParser.cpp ${CMAKE_SOURCE_DIR}/src/helpers.hpp ${CMAKE_BINARY_DIR}/src/work.pb.h ${CMAKE_BINARY_DIR}/src/work.pb.cc)
+add_executable(testDMSP Test_DelimitedMessagesStreamParser.cpp ${CMAKE_SOURCE_DIR}/src/helpers.hpp ${CMAKE_BINARY_DIR}/src/work.pb.h ${CMAKE_BINARY_DIR}/src/work.pb.cc)
 target_link_libraries(testDMSP GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 add_executable(testHelpers Test_helpers.cpp ${CMAKE_SOURCE_DIR}/src/helpers.hpp ${CMAKE_BINARY_DIR}/src/work.pb.h ${CMAKE_BINARY_DIR}/src/work.pb.cc)
 target_link_libraries(testHelpers GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
