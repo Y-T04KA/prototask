@@ -26,7 +26,9 @@ private:
         google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
         google::protobuf::io::CodedInputStream coded_input(&array_input);
         uint32_t size;
-        coded_input.ReadVarint32(&size);
+        if(!coded_input.ReadVarint32(&size)){
+            throw std::runtime_error("Wrong data passed as varint");
+        }
         return size;
     }
     bool isBigEnough(){
