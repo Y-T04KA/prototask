@@ -36,10 +36,10 @@ PointerToConstData serializeDelimited(const Message& msg)
        * \return Умный указатель на сообщение. Если удалось расшифровать сообщение, то он не пустой.
        */
 template<typename Message>
-std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = nullptr){
+std::shared_ptr<Message> parseDelimited(const void* data, size_t size, size_t* bytesConsumed = nullptr){
     if (data == nullptr) return nullptr;
     auto payload = static_cast<const char*>(data);
-    if (payload=="") return nullptr;
+    if (std::string(payload).empty()) return nullptr;
     Message msg;
     google::protobuf::io::ArrayInputStream array_input(payload, size);
     google::protobuf::io::CodedInputStream coded_input(&array_input);
@@ -62,8 +62,8 @@ std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* b
     return std::shared_ptr<Message>(new Message{msg});
 }
 
-prototask::WrapperMessage makeMessage(int mode, std::string payload){
-    prototask::WrapperMessage wm;
+TestTask::Messages::WrapperMessage makeMessage(int mode, std::string payload){
+    TestTask::Messages::WrapperMessage wm;
     switch (mode) {
         case 1:{
             wm.mutable_fast_response()->set_current_date_time(payload);
