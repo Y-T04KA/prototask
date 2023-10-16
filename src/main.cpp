@@ -1,13 +1,13 @@
-#include "DelimetedMessagesStreamParser.hpp"
+#include "DelimitedMessagesStreamParser.hpp"
 
 int main(int argc, char* argv[]) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     std::vector<char> messages;
     auto eh = makeMessage(3,"20230926T192839.111");
-    auto temp = serializeDelimited<prototask::WrapperMessage>(eh);
+    auto temp = serializeDelimited<TestTask::Messages::WrapperMessage>(eh);
     messages.insert(messages.end(),temp->begin(),temp->end());
 
-    typedef DelimetedMessagesStreamParser<prototask::WrapperMessage> Parser;
+    typedef DelimitedMessagesStreamParser<TestTask::Messages::WrapperMessage> Parser;
     Parser parser;
     // идем по одному байту по входному потоку сообщений
     for(const char byte : messages)

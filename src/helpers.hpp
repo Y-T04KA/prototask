@@ -36,19 +36,18 @@ PointerToConstData serializeDelimited(const Message& msg)
        * \return Умный указатель на сообщение. Если удалось расшифровать сообщение, то он не пустой.
        */
 template<typename Message>
-std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* bytesConsumed = nullptr){
+std::shared_ptr<Message> parseDelimited(const void* data, size_t size, size_t* bytesConsumed = nullptr){
     if (data == nullptr) return nullptr;
     auto payload = static_cast<const char*>(data);
-    if (payload=="") return nullptr;
+    if (std::string(payload).empty()) return nullptr;
     Message msg;
     google::protobuf::io::ArrayInputStream array_input(payload, size);
     google::protobuf::io::CodedInputStream coded_input(&array_input);
     uint32_t sizeInternal;//проще посчитать размер дважды, чем высчитывать сколько отрезать от буфера чтобы не сломать сообщение целиком
-    coded_input.ReadVarint32(&sizeInternal);
-    if (coded_input.ExpectTag(0)){
+    if (!coded_input.ReadVarint32(&sizeInternal)){
         throw std::runtime_error("Failed to ReadVarint32");
-        //return nullptr; в MR просили вернуть nullptr, однако в таком случае ломается тест на
-    }//закоррапченный varint, ибо там ждут runtime error а не nullptr
+        //return nullptr; в MR просили вернуть nullptr, но тогда ломается тест на закоррапченный varint, там ждут runtime error а не nullptr
+    }
     google::protobuf::io::CodedInputStream::Limit lim = coded_input.PushLimit(sizeInternal);
     if (!msg.ParseFromCodedStream(&coded_input)){
         throw std::runtime_error("Wrong Data passed to parseDelimited()");
@@ -63,8 +62,8 @@ std::shared_ptr<Message> parseDelimeted(const void* data, size_t size, size_t* b
     return std::shared_ptr<Message>(new Message{msg});
 }
 
-prototask::WrapperMessage makeMessage(int mode, std::string payload){
-    prototask::WrapperMessage wm;
+TestTask::Messages::WrapperMessage makeMessage(int mode, std::string payload){
+    TestTask::Messages::WrapperMessage wm;
     switch (mode) {
         case 1:{
             wm.mutable_fast_response()->set_current_date_time(payload);

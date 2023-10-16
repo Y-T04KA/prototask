@@ -4,13 +4,14 @@
 #include "helpers.hpp"
 
 template<typename MessageType>
-class DelimetedMessagesStreamParser {
+class DelimitedMessagesStreamParser {
 public://уровень пониже -- строим кэш и отдаем его на парсинг, получаем одно сообщение, отдаем его наверх
     typedef std::shared_ptr<MessageType> PointerToConstValue;
     std::list<PointerToConstValue> parse(const std::string& data){
         for (auto sym : data) m_buffer.push_back(sym);//now it goes through all symblols in string
         while (isBigEnough()){
-            auto res = parseDelimeted<MessageType>(static_cast<const void*>(m_buffer.data()),m_buffer.size(),&bytes_consumed);
+            auto res = parseDelimited<MessageType>(static_cast<const void *>(m_buffer.data()), m_buffer.size(),
+                                                   &bytes_consumed);
             retval.push_back(res);
             prepareForNextMessage();
         }
@@ -26,7 +27,9 @@ private:
         google::protobuf::io::ArrayInputStream array_input(&input[0], input.size());
         google::protobuf::io::CodedInputStream coded_input(&array_input);
         uint32_t size;
-        coded_input.ReadVarint32(&size);
+        if(!coded_input.ReadVarint32(&size)){
+            throw std::runtime_error("Wrong data passed as varint");
+        }
         return size;
     }
     bool isBigEnough(){
